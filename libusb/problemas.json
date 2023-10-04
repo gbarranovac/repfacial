@@ -1,0 +1,9 @@
+{
+	"Permission denied": {
+		"quando": "executando exemplo sem privilégios root",
+		"solução": [
+			"https://stackoverflow.com/questions/22713834/libusb-cannot-open-usb-device-permission-isse-netbeans-ubuntu",
+			"https://unix.stackexchange.com/questions/39370/how-to-reload-udev-rules-without-reboot"
+		]
+	}
+}

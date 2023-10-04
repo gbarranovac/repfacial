@@ -1,0 +1,33 @@
+#!/bin/sh
+cd  /sys/kernel/config/usb_gadget/
+mkdir -p g1 && cd g1
+mkdir -p functions/ffs.usb0
+mkdir -p strings/0x409
+mkdir -p configs/c.1/strings/0x409
+echo 0x3036 > idVendor # Control iD vendor id
+echo 0x0052 > idProduct # arbitrary product id
+echo 0x0100 > bcdDevice # v1.0.0
+echo 0x0200 > bcdUSB # USB2
+echo 0x0 > bDeviceClass
+echo 0x0 > bDeviceSubClass
+echo 64 > bMaxPacketSize0
+echo 50 > configs/c.1/MaxPower
+echo 0xc0 > configs/c.1/bmAttributes
+echo "XYZ" > strings/0x409/manufacturer
+echo "0123456789" > strings/0x409/serialnumber
+echo "repFacial" > strings/0x409/product
+echo "USB FunctionFS config" > configs/c.1/strings/0x409/configuration
+#####
+# create the (only) function
+mkdir functions/ffs.usb0 # .
+#####
+# Add functions here
+ln -s functions/ffs.usb0 configs/c.1/
+# End functions
+mkdir /dev/ffs-usb0 # this is where the endpoint will appear
+mount -t functionfs usb0 /dev/ffs-usb0
+cd
+./ffs &
+sleep 3
+cd /sys/kernel/config/usb_gadget/g1
+echo ffd00000.dwc3 > UDC
